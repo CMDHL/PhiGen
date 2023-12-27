@@ -1,6 +1,7 @@
 # PhiGen
 - A Phigros/Phira chart generator, converting a video to a chart that's playable in Phira.
 - To use it, simply download PhiGen_English.zip from Releases page and click PhiGen.exe to open. The dependencies listed below are required only for building from the source code instead.
+- [Demonstration Videos](https://b23.tv/Y1A9JUy)
 - The current code is messy and buggy but in general, it works. 
   - During the export process, especially with longer videos, it might briefly become unresponsive. This is due to difficulties in threading 'parseVideo()' to trigger subsequent QProcesses. As a result, it remains in the main thread, causing UI delays.
   - Error message pop-ups haven't been implemented. Instead, debug messages, including those from third-party executables, appear at the top of the window for issue identification.
