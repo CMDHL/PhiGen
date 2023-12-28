@@ -12,7 +12,7 @@
   - 我用的是 Qt 5.14.1, Qt Creator 4.11.1
 
 - [Visual Studio](https://visualstudio.microsoft.com/vs/older-downloads/)
-  - 在Qt Creator里下用msvc2017编译。
+  - 在Qt Creator里用msvc2017编译。
 
 - [OpenCV](https://opencv.org/releases/)
   - 用于访问视频每帧各像素。
