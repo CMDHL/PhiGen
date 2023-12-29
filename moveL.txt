@@ -1,0 +1,44 @@
+               ],
+               "rotateEvents" : [
+                  {
+                     "bezier" : 0,
+                     "bezierPoints" : [ 0.0, 0.0, 0.0, 0.0 ],
+                     "easingLeft" : 0.0,
+                     "easingRight" : 1.0,
+                     "easingType" : 1,
+                     "end" : -90.0,
+                     "endTime" : [ 1, 0, 1 ],
+                     "linkgroup" : 0,
+                     "start" : -90.0,
+                     "startTime" : [ 0, 0, 1 ]
+                  }
+               ],
+               "speedEvents" : [
+                  {
+                     "end" : 10.0,
+                     "endTime" : [ 1, 0, 1 ],
+                     "linkgroup" : 0,
+                     "start" : 10.0,
+                     "startTime" : [ 0, 0, 1 ]
+                  }
+               ]
+            }
+         ],
+         "extended" : {
+            "inclineEvents" : [
+               {
+                  "bezier" : 0,
+                  "bezierPoints" : [ 0.0, 0.0, 0.0, 0.0 ],
+                  "easingLeft" : 0.0,
+                  "easingRight" : 1.0,
+                  "easingType" : 0,
+                  "end" : 0.0,
+                  "endTime" : [ 1, 0, 1 ],
+                  "linkgroup" : 0,
+                  "start" : 0.0,
+                  "startTime" : [ 0, 0, 1 ]
+               }
+            ]
+         },
+         "father" : -1,
+         "isCover" : 1,
