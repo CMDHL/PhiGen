@@ -1,0 +1,50 @@
+         "posControl" : [
+            {
+               "easing" : 1,
+               "pos" : 1.0,
+               "x" : 0.0
+            },
+            {
+               "easing" : 1,
+               "pos" : 1.0,
+               "x" : 9999999.0
+            }
+         ],
+         "sizeControl" : [
+            {
+               "easing" : 1,
+               "size" : 1.0,
+               "x" : 0.0
+            },
+            {
+               "easing" : 1,
+               "size" : 1.0,
+               "x" : 9999999.0
+            }
+         ],
+         "skewControl" : [
+            {
+               "easing" : 1,
+               "skew" : 0.0,
+               "x" : 0.0
+            },
+            {
+               "easing" : 1,
+               "skew" : 0.0,
+               "x" : 9999999.0
+            }
+         ],
+         "yControl" : [
+            {
+               "easing" : 1,
+               "x" : 0.0,
+               "y" : 1.0
+            },
+            {
+               "easing" : 1,
+               "x" : 9999999.0,
+               "y" : 1.0
+            }
+         ],
+         "zOrder" : 0
+      },

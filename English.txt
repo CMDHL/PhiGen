@@ -1,0 +1,49 @@
+Import Video
+Set Export Path
+Export
+Import Audio
+Extract Audio from Video
+Import Background Image
+Use a Random Frame
+Title 
+Composer 
+Charter 
+Level 
+Black/White
+Greyscale
+max FPS:
+ min diff:
+Place notes when volume's local max is at least
+times the local mins 
+fall speed:
+min interval:
+min hold duration:
+no-notes duration to begin:
+drag-only duration after click:
+drag-only duration after hold/drag/flick:
+Done converting video to mp3
+Done converting mp3 to wave.json
+Total fake notes:
+Total real notes:
+    click:
+    hold:
+    flick:
+    drag:
+Total moveXY events:
+    horizontal:
+    vertical:
+Exported as 
+Export
+Running third-party exe: 
+Import Audio
+Import Background Image
+Done generating real notes
+original fps:
+, set max fps = 
+Done generating fake notes
+Done selecting a random frame for background image
+幕布
+Done writing chart.json
+Exporting...
+Import Audio
+Import Background Image

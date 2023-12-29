@@ -1,0 +1,96 @@
+         "posControl" : [
+            {
+               "easing" : 1,
+               "pos" : 1.0,
+               "x" : 0.0
+            },
+            {
+               "easing" : 1,
+               "pos" : 1.0,
+               "x" : 9999999.0
+            }
+         ],
+         "sizeControl" : [
+            {
+               "easing" : 1,
+               "size" : 1.0,
+               "x" : 0.0
+            },
+            {
+               "easing" : 1,
+               "size" : 1.0,
+               "x" : 9999999.0
+            }
+         ],
+         "skewControl" : [
+            {
+               "easing" : 1,
+               "skew" : 0.0,
+               "x" : 0.0
+            },
+            {
+               "easing" : 1,
+               "skew" : 0.0,
+               "x" : 9999999.0
+            }
+         ],
+         "yControl" : [
+            {
+               "easing" : 1,
+               "x" : 0.0,
+               "y" : 1.0
+            },
+            {
+               "easing" : 1,
+               "x" : 9999999.0,
+               "y" : 1.0
+            }
+         ],
+         "zOrder" : 0
+      },
+      {
+         "Group" : 1,
+         "Name" : "上平移",
+         "Texture" : "line.png",
+         "alphaControl" : [
+            {
+               "alpha" : 1.0,
+               "easing" : 1,
+               "x" : 0.0
+            },
+            {
+               "alpha" : 1.0,
+               "easing" : 1,
+               "x" : 9999999.0
+            }
+         ],
+         "bpmfactor" : 1.0,
+         "eventLayers" : [
+            {
+               "alphaEvents" : [
+                  {
+                     "bezier" : 0,
+                     "bezierPoints" : [ 0.0, 0.0, 0.0, 0.0 ],
+                     "easingLeft" : 0.0,
+                     "easingRight" : 1.0,
+                     "easingType" : 1,
+                     "end" : 0,
+                     "endTime" : [ 1, 0, 1 ],
+                     "linkgroup" : 0,
+                     "start" : 0,
+                     "startTime" : [ 0, 0, 1 ]
+                  }
+               ],
+               "moveXEvents" : [
+                  {
+                     "bezier" : 0,
+                     "bezierPoints" : [ 0.0, 0.0, 0.0, 0.0 ],
+                     "easingLeft" : 0.0,
+                     "easingRight" : 1.0,
+                     "easingType" : 1,
+                     "end" : 0.0,
+                     "endTime" : [ 1, 0, 1 ],
+                     "linkgroup" : 0,
+                     "start" : 0.0,
+                     "startTime" : [ 0, 0, 1 ]
+                  }

@@ -1,0 +1,5 @@
+v1.1  - 2023/12/29
+- Added the missing 7z.dll
+- Allowed language switching through clicking a button
+- Updated the README files inside the packages
+- Uploaded files and directories instead of zips for the source code to github
