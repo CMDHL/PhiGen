@@ -1,0 +1,9 @@
+{
+   "BPMList" : [
+      {
+         "bpm" : 60.0,
+         "startTime" : [ 0, 0, 1 ]
+      }
+   ],
+   "META" : {
+      "RPEVersion" : 130,

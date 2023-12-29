@@ -1,0 +1,6 @@
+                  ,{
+                     "bezier" : 0,
+                     "bezierPoints" : [ 0.0, 0.0, 0.0, 0.0 ],
+                     "easingLeft" : 0.0,
+                     "easingRight" : 1.0,
+                     "easingType" : 1,
