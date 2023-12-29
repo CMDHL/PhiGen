@@ -309,12 +309,16 @@ void MainWindow::Chinese()
 {
     language="Chinese.txt";
     updateText();
+    ChineseButton->setStyleSheet(selectedStyle);
+    EnglishButton->setStyleSheet(unselectedStyle);
 }
 
 void MainWindow::English()
 {
     language="English.txt";
     updateText();
+    ChineseButton->setStyleSheet(unselectedStyle);
+    EnglishButton->setStyleSheet(selectedStyle);
 }
 
 void MainWindow::bw()
