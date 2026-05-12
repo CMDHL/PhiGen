@@ -1,32 +1,25 @@
 # PhiGen
-- A Phigros/Phira chart generator, converting a video to a chart that's playable in Phira.
-- To use it, simply download PhiGen_English.zip from Releases page and click PhiGen.exe to open. The dependencies listed below are required only for building from the source code instead.
-- [Demonstration Videos](https://www.bilibili.com/video/BV1eK411t7XE)
-- The current code is messy and buggy but in general, it works. 
-  - During the export process, especially with longer videos, it might briefly become unresponsive. This is due to difficulties in threading 'parseVideo()' to trigger subsequent QProcesses. As a result, it remains in the main thread, causing UI delays.
-  - Error message pop-ups haven't been implemented. Instead, debug messages, including those from third-party executables, appear at the top of the window for issue identification.
 
-## Dependencies (only needed if you want to build from source)
+A browser-based Phigros/Phira chart generator, converting user-provided audio and video inputs into charts playable in Phira.
 
-- [Qt](https://www.qt.io/)
-  - Developed using Qt 5.14.1 and Qt Creator 4.11.1.
+Live demo: https://cmdhl.github.io/PhiGen/
 
-- [Visual Studio](https://visualstudio.microsoft.com/vs/older-downloads/)
-  - Compiled using msvc2017 in Qt Creator.
+Repository: https://github.com/CMDHL/PhiGen
 
-- [OpenCV](https://opencv.org/releases/)
-  - Used for frame pixel traversal in videos.
+## Project Context
 
-- [FFmpeg](https://ffmpeg.org/)
-  - Used to convert videos to mp3 files.
+An earlier version of PhiGen was originally made for fun years ago, and kept as a separate branch. This version was substantially revised and extended as the final project for CS6682.
 
-- [audiowaveform](https://github.com/bbc/audiowaveform)
-  - Used to analyze waveforms in audio files and insert notes accordingly.
+## AI Assistance
 
-- [7-Zip](https://www.7-zip.org/)
-  - Used 7z.exe to zip the files.
+This version was also developed with AI assistance in coding, debugging, and documentation. The original idea, project direction, design choices, implementation planning, and final responsibility for the work remain with the project author.
 
-## Other References
+## Third-Party Libraries and Models
 
-- I basically followed the output format of Re:PhiEdit, but somehow I could not import my generated zip into RPE even after manually adding info.txt and changing the extension to .pez, so I guess I am missing something... 
-- Special thanks to ChatGPT for all the assistance, including finding libraries, debugging, phrasing this document, and more!
+This project uses the following third-party libraries and models:
+
+- [fflate](https://github.com/101arrowz/fflate), loaded from jsDelivr, for ZIP file generation. fflate is MIT licensed.
+- [OpenCV.js](https://opencv.org/), loaded from the OpenCV documentation CDN, for image/template matching in browser-based visual tracking. OpenCV 4.5.0 and newer are Apache-2.0 licensed.
+- [TensorFlow.js](https://github.com/tensorflow/tfjs), loaded from jsDelivr, as the browser ML runtime. TensorFlow.js is Apache-2.0 licensed.
+- [TensorFlow.js pose-detection](https://github.com/tensorflow/tfjs-models/tree/master/pose-detection), loaded from jsDelivr, for MoveNet-based pose detection. The TensorFlow.js models repository is Apache-2.0 licensed.
+- [MoveNet](https://blog.tensorflow.org/2021/05/next-generation-pose-detection-with-movenet-and-tensorflowjs.html), used through TensorFlow.js pose-detection for single-person and multi-person body keypoint detection.
