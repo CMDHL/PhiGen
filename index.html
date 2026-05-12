@@ -1,0 +1,300 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>PhiGen</title>
+    <link rel="stylesheet" href="styles.css">
+  </head>
+  <body>
+    <main class="shell">
+      <section class="workspace">
+        <div class="panel controls">
+          <div class="field-grid">
+            <label>
+              Name
+              <input id="nameInput" value="Unknown">
+            </label>
+            <label>
+              Composer
+              <input id="composerInput" value="Unknown">
+            </label>
+            <label>
+              Charter
+              <input id="charterInput" value="Unknown">
+            </label>
+            <label>
+              Level
+              <input id="levelInput" value="SP Lv.?">
+            </label>
+          </div>
+
+          <details class="control-section" open>
+            <summary>Templates</summary>
+            <section class="template-section" aria-labelledby="judgeTemplateTitle">
+              <h2 id="judgeTemplateTitle">Judgement lines</h2>
+              <div class="template-grid">
+                <label class="template-card">
+                  <input type="radio" name="judgeTemplate" value="static-single" checked>
+                  <span class="template-name">Single static line</span>
+                  <span class="template-note">Requires audio</span>
+                </label>
+                <label class="template-card">
+                  <input type="radio" name="judgeTemplate" value="tracking-single">
+                  <span class="template-name">Single moving line tracking targets</span>
+                  <span class="template-note">Requires video + target images</span>
+                </label>
+                <label class="template-card">
+                  <input type="radio" name="judgeTemplate" value="audio-dynamic">
+                  <span class="template-name">Single static line with audio-based dynamics</span>
+                  <span class="template-note">Requires audio</span>
+                </label>
+                <label class="template-card">
+                  <input type="radio" name="judgeTemplate" value="audio-dynamic-two">
+                  <span class="template-name">Two static lines with audio-based dynamics</span>
+                  <span class="template-note">Requires audio</span>
+                </label>
+                <label class="template-card">
+                  <input type="radio" name="judgeTemplate" value="static-four">
+                  <span class="template-name">Four static lines with audio-based dynamics</span>
+                  <span class="template-note">Requires audio</span>
+                </label>
+              </div>
+            </section>
+
+            <section class="template-section" aria-labelledby="decorTemplateTitle">
+              <h2 id="decorTemplateTitle">Decorations</h2>
+              <div class="template-grid decoration-grid">
+                <label class="template-card">
+                  <input type="radio" name="decorationTemplate" value="none" checked>
+                  <span class="template-name">None</span>
+                  <span class="template-note">Requires nothing</span>
+                </label>
+                <label class="template-card">
+                  <input type="radio" name="decorationTemplate" value="fake-pixels-bw">
+                  <span class="template-name">B/W pixel notes</span>
+                  <span class="template-note">Requires video</span>
+                </label>
+                <label class="template-card">
+                  <input type="radio" name="decorationTemplate" value="fake-pixels-grey">
+                  <span class="template-name">Grayscale pixel notes</span>
+                  <span class="template-note">Requires video</span>
+                </label>
+                <label class="template-card">
+                  <input type="radio" name="decorationTemplate" value="stick-figure">
+                  <span class="template-name">Stick figure humanoids</span>
+                  <span class="template-note">Requires video</span>
+                </label>
+              </div>
+            </section>
+          </details>
+
+          <details class="control-section" open>
+            <summary>Settings</summary>
+            <section class="settings-section" data-settings-section="general" aria-labelledby="generalSettingsTitle">
+              <h2 id="generalSettingsTitle">General</h2>
+              <div class="field-grid compact">
+                <label>
+                  Fall speed
+                  <input id="fallSpeedInput" type="number" min="0" step="0.01" value="0.25">
+                </label>
+                <label>
+                  Start offset
+                  <input id="offsetInput" type="number" min="0" step="0.1" value="2">
+                </label>
+                <label>
+                  Min note gap
+                  <input id="noteIntervalInput" type="number" min="0" step="0.05" value="0">
+                </label>
+                <label>
+                  Hold threshold
+                  <input id="holdTimeInput" type="number" min="0" step="0.05" value="0.5">
+                </label>
+                <label>
+                  Click recovery
+                  <input id="clickIntervalInput" type="number" min="0" step="0.05" value="0.2">
+                </label>
+                <label>
+                  Hold recovery
+                  <input id="holdIntervalInput" type="number" min="0" step="0.05" value="0.2">
+                </label>
+              </div>
+            </section>
+
+            <section class="settings-section" data-settings-section="tracking" aria-labelledby="trackingSettingsTitle">
+              <h2 id="trackingSettingsTitle">Target tracking</h2>
+              <label class="checkbox-row">
+                <input id="trackOriginalSizeInput" type="checkbox">
+                <span>Detect target at original video size</span>
+              </label>
+              <div class="field-grid compact">
+                <label>
+                  Tracking samples/sec
+                  <input id="trackFpsInput" type="number" min="1" max="12" step="1" value="5">
+                </label>
+                <label>
+                  First-detect confidence
+                  <input id="matchThresholdInput" type="number" min="0" max="1" step="0.01" value="0.68">
+                </label>
+                <label>
+                  Local confidence
+                  <input id="localMatchThresholdInput" type="number" min="0" max="1" step="0.01" value="0.56">
+                </label>
+                <label>
+                  Max color difference
+                  <input id="maxColorDiffInput" type="number" min="0" max="255" step="1" value="35">
+                </label>
+              </div>
+            </section>
+
+            <section class="settings-section" data-settings-section="pixels" aria-labelledby="pixelSettingsTitle">
+              <h2 id="pixelSettingsTitle">Pixel decorations</h2>
+              <div class="field-grid compact">
+                <label>
+                  Pixel decoration FPS
+                  <input id="fakePixelFpsInput" type="number" min="1" max="12" step="1" value="6">
+                </label>
+                <label>
+                  Pixel threshold
+                  <input id="fakePixelThresholdInput" type="number" min="1" max="255" step="1" value="128">
+                </label>
+              </div>
+              <p class="settings-note" data-pixel-note="bw">Darker than threshold becomes empty.</p>
+              <p class="settings-note" data-pixel-note="grey" hidden>Threshold controls brightness-change sensitivity.</p>
+            </section>
+
+            <section class="settings-section" data-settings-section="stick" aria-labelledby="stickSettingsTitle">
+              <h2 id="stickSettingsTitle">Stick figure</h2>
+              <label class="checkbox-row">
+                <input id="stickOriginalSizeInput" type="checkbox" checked>
+                <span>Detect pose at original video size</span>
+              </label>
+              <label class="checkbox-row">
+                <input id="stickOnsetOnlyInput" type="checkbox">
+                <span>Detect pose on note onset only</span>
+              </label>
+              <label class="checkbox-row">
+                <input id="stickHoldPoseInput" type="checkbox" checked>
+                <span>Update pose on detected frames only</span>
+              </label>
+              <label class="checkbox-row">
+                <input id="stickHoldMissingJointsInput" type="checkbox">
+                <span>Use previous location for missing joints</span>
+              </label>
+              <div class="field-grid compact">
+                <label>
+                  Max humanoids
+                  <input id="stickMaxHumanoidsInput" type="number" min="1" step="1" value="1">
+                </label>
+                <label data-stick-fps-panel>
+                  Stick figure FPS
+                  <input id="stickFpsInput" type="number" min="1" max="12" step="1" value="5">
+                </label>
+                <label>
+                  Joint confidence threshold
+                  <input id="stickJointThresholdInput" type="number" min="0" max="1" step="0.01" value="0.1">
+                </label>
+              </div>
+            </section>
+          </details>
+
+          <details class="control-section" open>
+            <summary>Input files</summary>
+            <label class="checkbox-row">
+              <input id="useVideoAudioInput" type="checkbox" checked>
+              <span>Use audio from video source</span>
+            </label>
+
+            <label class="checkbox-row">
+              <input id="useVideoCoverInput" type="checkbox" checked>
+              <span>Use random frame from video as cover</span>
+            </label>
+
+            <label class="file-picker" data-input-panel="audio">
+              <span>Audio source</span>
+              <input id="audioInput" type="file" accept="audio/*">
+            </label>
+
+            <label class="file-picker" data-input-panel="video">
+              <span>Video source</span>
+              <input id="videoInput" type="file" accept="video/*">
+            </label>
+
+            <label class="file-picker" data-input-panel="targets">
+              <span>Target images</span>
+              <input id="targetInput" type="file" accept="image/*" multiple>
+            </label>
+            <div id="targetList" class="target-list" data-input-panel="targets"></div>
+
+            <label class="file-picker" data-input-panel="cover">
+              <span>Cover image</span>
+              <input id="coverInput" type="file" accept="image/*">
+            </label>
+          </details>
+
+          <div class="button-grid">
+            <button id="visualButton" type="button">Process visual</button>
+            <button id="removeVisualButton" type="button" disabled>Remove visual</button>
+            <button id="audioButton" type="button">Process audio</button>
+            <button id="removeAudioButton" type="button" disabled>Remove audio</button>
+            <button id="exportButton" type="button" disabled>Export</button>
+          </div>
+        </div>
+
+        <div class="panel preview">
+          <div class="preview-header">
+            <button id="previewToggleButton" type="button">Hide preview</button>
+          </div>
+          <div id="previewBody">
+            <div class="output-frame">
+              <canvas id="outputCanvas" width="968" height="560"></canvas>
+            </div>
+            <div class="preview-scrubber">
+              <button id="playButton" type="button" disabled>Play</button>
+              <input id="previewSlider" type="range" min="0" max="0" step="1" value="0" disabled>
+            </div>
+            <div id="wavePanel" class="wave-panel">
+              <canvas id="waveCanvas" width="968" height="160"></canvas>
+            </div>
+          </div>
+          <div class="target-strip">
+            <img id="targetPreview" alt="">
+            <div>
+              <strong id="statusTitle">Waiting for files</strong>
+              <p id="statusText">Upload a video and target image to begin.</p>
+            </div>
+          </div>
+          <progress id="progressBar" max="1" value="0"></progress>
+        </div>
+      </section>
+    </main>
+
+    <video id="videoPreview" playsinline muted hidden></video>
+    <canvas id="workCanvas" hidden></canvas>
+    <canvas id="targetCanvas" hidden></canvas>
+
+    <script src="https://cdn.jsdelivr.net/npm/fflate@0.8.2/umd/index.js"></script>
+    <script>
+      (() => {
+        const cacheBust = `${Date.now()}-${Math.random().toString(36).slice(2)}`;
+        console.log("[PhiGen] loading app.js with cache bust:", cacheBust);
+
+        const appScript = document.createElement("script");
+        appScript.src = `app.js?v=${encodeURIComponent(cacheBust)}`;
+
+        appScript.onload = () => {
+          const cvScript = document.createElement("script");
+          cvScript.async = true;
+          cvScript.src = "https://docs.opencv.org/4.9.0/opencv.js";
+          document.body.appendChild(cvScript);
+        };
+
+        appScript.onerror = () => {
+          console.error("[PhiGen] failed to load app.js");
+        };
+
+        document.body.appendChild(appScript);
+      })();
+    </script>
+  </body>
+</html>
