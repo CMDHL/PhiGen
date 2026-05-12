@@ -1,4 +1,4 @@
-# PhiGen
+# PhiGen V2
 
 A browser-based Phigros/Phira chart generator, converting user-provided audio and video inputs into charts playable in Phira.
 
