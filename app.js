@@ -31,6 +31,7 @@ const els = {
   stickOnsetOnlyInput: document.querySelector("#stickOnsetOnlyInput"),
   stickHoldPoseInput: document.querySelector("#stickHoldPoseInput"),
   stickFpsPanel: document.querySelector("[data-stick-fps-panel]"),
+  languageSelect: document.querySelector("#languageSelect"),
 };
 
 const P = {
@@ -72,10 +73,8 @@ const LINE_PRESETS = {
 
 const AUDIO_DETECTION = {
   // Browser-only spectral-flux onset detector defaults.
-  // These replace only the old amplitude peak/minimum contrast logic.
   thresholdStdScale: 0.78,
   thresholdFloor: 0.043,
-  oldVolumeDiff: 3,
 };
 
 const PIXEL_DECORATION_TEMPLATES = ["fake-pixels-bw", "fake-pixels-grey"];
@@ -112,9 +111,236 @@ const APP_BUILD_ID = "stick-multipose-2026-05-11-a";
 let lastStaticFourDebug = null;
 console.log(`[PhiGen] Loaded app.js build ${APP_BUILD_ID}`);
 
+const I18N = {
+  en: {},
+  zh: {
+    "Language": "语言",
+    "Auto": "自动",
+    "English": "English",
+    "Name": "曲名",
+    "Composer": "作曲",
+    "Charter": "谱师",
+    "Level": "等级",
+    "Templates": "模板",
+    "Judgement lines": "判定线",
+    "Single static line": "单条静态判定线",
+    "Requires audio": "需要音频",
+    "Single moving line tracking targets": "跟踪目标的单条移动判定线",
+    "Requires video + target images": "需要视频 + 目标图片",
+    "Single static line with audio-based dynamics": "单条静态判定线 + 音频动态效果",
+    "Two static lines with audio-based dynamics": "两条静态判定线 + 音频动态效果",
+    "Four static lines with audio-based dynamics": "四条静态判定线 + 音频动态效果",
+    "Decorations": "装饰",
+    "None": "无",
+    "Requires nothing": "不需要额外输入",
+    "B/W pixel notes": "黑白像素音符",
+    "Requires video": "需要视频",
+    "Grayscale pixel notes": "灰度像素音符",
+    "Stick figure humanoids": "火柴人",
+    "Settings": "设置",
+    "General": "通用",
+    "Fall speed": "下落速度",
+    "Start offset": "开始偏移",
+    "Min note gap": "最小音符间隔",
+    "Hold threshold": "长按阈值",
+    "Click recovery": "点击恢复间隔",
+    "Hold recovery": "长按恢复间隔",
+    "Target tracking": "目标跟踪",
+    "Detect target at original video size": "按视频原始尺寸检测目标",
+    "Tracking samples/sec": "跟踪采样/秒",
+    "First-detect confidence": "首次检测置信度",
+    "Local confidence": "局部置信度",
+    "Max color difference": "最大颜色差异",
+    "Pixel decorations": "像素装饰",
+    "Pixel decoration FPS": "像素装饰 FPS",
+    "Pixel threshold": "像素阈值",
+    "Darker than threshold becomes empty.": "低于阈值的暗色区域会变为空白。",
+    "Threshold controls brightness-change sensitivity.": "阈值控制亮度变化灵敏度。",
+    "Stick figure": "火柴人",
+    "Detect pose at original video size": "按视频原始尺寸检测姿态",
+    "Detect pose on note onset only": "只在音符开始时检测姿态",
+    "Update pose on detected frames only": "只在检测帧更新姿态",
+    "Use previous location for missing joints": "缺失关节沿用上一位置",
+    "Max humanoids": "最大人数",
+    "Stick figure FPS": "火柴人 FPS",
+    "Joint confidence threshold": "关节置信度阈值",
+    "Input files": "输入文件",
+    "Use audio from video source": "使用视频中的音频",
+    "Use random frame from video as cover": "使用视频随机帧作为封面",
+    "Audio source": "音频来源",
+    "Video source": "视频来源",
+    "Target images": "目标图片",
+    "Cover image": "封面图片",
+    "Process visual": "处理视觉",
+    "Remove visual": "移除视觉",
+    "Process audio": "处理音频",
+    "Remove audio": "移除音频",
+    "Export": "导出",
+    "Hide preview": "隐藏预览",
+    "Show preview": "显示预览",
+    "Play": "播放",
+    "Pause": "暂停",
+    "Waiting for files": "等待文件",
+    "Upload a video and target image to begin.": "上传视频和目标图片后开始。",
+    "Up": "上移",
+    "Dn": "下移",
+    "Ready": "准备就绪",
+    "OpenCV loaded. Upload files and process audio / visual.": "OpenCV 已加载。上传文件后处理音频/视觉。",
+    "Audio loaded": "音频已载入",
+    "Video loaded": "视频已载入",
+    "Targets loaded": "目标已载入",
+    "Stopping audio": "正在停止音频处理",
+    "Cancelling audio processing.": "正在取消音频处理。",
+    "Stopping visual": "正在停止视觉处理",
+    "Cancelling visual processing after the current frame.": "将在当前帧后取消视觉处理。",
+    "Audio removed": "音频已移除",
+    "Audio notes were removed. You can process audio again or export visual-only.": "音频音符已移除。可以重新处理音频，或只导出视觉结果。",
+    "Visual removed": "视觉已移除",
+    "Visual tracking was removed. You can process visual again or export audio-only.": "视觉跟踪已移除。可以重新处理视觉，或只导出音频结果。",
+    "Missing input": "缺少输入",
+    "Choose an audio file or a video first.": "请先选择音频文件或视频。",
+    "Processing audio": "正在处理音频",
+    "Decoding audio and detecting notes.": "正在解码音频并检测音符。",
+    "Audio done": "音频处理完成",
+    "Audio stopped": "音频处理已停止",
+    "Audio processing cancelled.": "音频处理已取消。",
+    "Audio failed": "音频处理失败",
+    "Choose a video first.": "请先选择视频。",
+    "No visual template": "没有视觉模板",
+    "Choose target tracking, pixel notes, or stick figure humanoids first.": "请先选择目标跟踪、像素音符或火柴人。",
+    "Choose at least one target image.": "请至少选择一张目标图片。",
+    "Still loading": "仍在加载",
+    "OpenCV is not ready yet.": "OpenCV 还没有准备好。",
+    "Process audio first": "请先处理音频",
+    "Stick figure onset detection needs processed audio notes.": "火柴人按音符开始检测需要先处理出音频音符。",
+    "Processing visual": "正在处理视觉",
+    "Visual done": "视觉处理完成",
+    "Visual stopped": "视觉处理已停止",
+    "Visual processing cancelled. Processed preview states were cleared.": "视觉处理已取消，已清除处理过的预览状态。",
+    "Visual failed": "视觉处理失败",
+    "Nothing to export": "没有可导出的内容",
+    "Process audio or visual first.": "请先处理音频或视觉。",
+    "Missing video": "缺少视频",
+    "This template needs a video file.": "这个模板需要视频文件。",
+    "Decoration not implemented": "装饰尚未实现",
+    "Rect matching is not implemented yet.": "矩形匹配尚未实现。",
+    "Exporting": "正在导出",
+    "Preparing chart package.": "正在准备谱面包。",
+    "Building pixel decoration": "正在生成像素装饰",
+    "Sampling video changes into fake notes.": "正在把视频变化采样成假音符。",
+    "Building stick figure": "正在生成火柴人",
+    "Detecting lightweight MoveNet body pose.": "正在用轻量级 MoveNet 检测人体姿态。",
+    "Writing audio": "正在写入音频",
+    "Encoding decoded audio as music.wav.": "正在把解码后的音频编码为 music.wav。",
+    "Export failed": "导出失败",
+    "Tracking target": "正在跟踪目标",
+    "Loading MoveNet": "正在加载 MoveNet",
+    "Loading lightweight multi-person pose detector for stick figure detection.": "正在加载用于火柴人检测的轻量级多人姿态检测器。",
+    "Loading lightweight pose detector for stick figure detection.": "正在加载用于火柴人检测的轻量级姿态检测器。",
+    "Building MoveNet stick figure": "正在生成 MoveNet 火柴人",
+    "Initializing lightweight pose detector.": "正在初始化轻量级姿态检测器。",
+    "Sampling video into fake-note pixels.": "正在把视频采样成假音符像素。",
+    "Capturing cover and tracking target.": "正在抓取封面并跟踪目标。",
+    "Process audio to preview notes, or process visual to preview video frames.": "处理音频后预览音符，或处理视觉后预览视频帧。",
+    "Stop audio": "停止音频",
+    "Stop visual": "停止视觉"
+  }
+};
+
+let currentLanguage = "en";
+
+function browserLanguage() {
+  const languages = navigator.languages?.length ? navigator.languages : [navigator.language || "en"];
+  return languages.some((lang) => String(lang).toLowerCase().startsWith("zh")) ? "zh" : "en";
+}
+
+function storedLanguageChoice() {
+  try {
+    return localStorage.getItem("phigen-language") || "auto";
+  } catch {
+    return "auto";
+  }
+}
+
+function setStoredLanguageChoice(choice) {
+  try {
+    localStorage.setItem("phigen-language", choice);
+  } catch {}
+}
+
+function resolveLanguage(choice = storedLanguageChoice()) {
+  return choice === "zh" || choice === "en" ? choice : browserLanguage();
+}
+
+function t(text) {
+  return I18N[currentLanguage]?.[text] || text;
+}
+
+function translateDynamicText(text) {
+  if (currentLanguage !== "zh" || typeof text !== "string") return text;
+  let match = text.match(/^Detected (\d+) notes from (\d+) onset\/stop windows \((\d+) long\)\.$/);
+  if (match) return `从 ${match[2]} 个起止检测窗口中生成了 ${match[1]} 个音符（${match[3]} 个长音）。`;
+  match = text.match(/^Created (\d+) fake decoration notes\.$/);
+  if (match) return `已创建 ${match[1]} 个假装饰音符。`;
+  match = text.match(/^Created (\d+) line keyframes\.$/);
+  if (match) return `已创建 ${match[1]} 个判定线关键帧。`;
+  match = text.match(/^Playable: (\d+) notes on (\d+) line\(s\)\. Decorations: (\d+) fake notes on (\d+) fake lines\(s\)\.(.*)$/);
+  if (match) return `可玩音符：${match[1]} 个，分布在 ${match[2]} 条判定线。装饰：${match[3]} 个假音符，分布在 ${match[4]} 条假判定线。${match[5] || ""}`;
+  match = text.match(/^(\d+) target image\(s\)\. Top item has highest priority\.$/);
+  if (match) return `已载入 ${match[1]} 张目标图片。排在最上面的优先级最高。`;
+  return t(text);
+}
+
+function translateStaticDom() {
+  const walker = document.createTreeWalker(document.body, NodeFilter.SHOW_TEXT, {
+    acceptNode(node) {
+      if (!node.nodeValue.trim()) return NodeFilter.FILTER_REJECT;
+      if (node.parentElement?.closest("script, style")) return NodeFilter.FILTER_REJECT;
+      return NodeFilter.FILTER_ACCEPT;
+    }
+  });
+  const nodes = [];
+  while (walker.nextNode()) nodes.push(walker.currentNode);
+  nodes.forEach((node) => {
+    if (!node.__i18nSource) node.__i18nSource = node.nodeValue.trim();
+    const translated = t(node.__i18nSource);
+    const leading = node.nodeValue.match(/^\s*/)?.[0] || "";
+    const trailing = node.nodeValue.match(/\s*$/)?.[0] || "";
+    node.nodeValue = `${leading}${translated}${trailing}`;
+  });
+}
+
+function applyLanguage(choice = storedLanguageChoice()) {
+  currentLanguage = resolveLanguage(choice);
+  document.documentElement.lang = currentLanguage === "zh" ? "zh-CN" : "en";
+  if (els.languageSelect) els.languageSelect.value = choice;
+  translateStaticDom();
+  if (els.previewToggle) els.previewToggle.textContent = previewVisible ? t("Hide preview") : t("Show preview");
+  if (els.play) els.play.textContent = previewPlaying ? t("Pause") : t("Play");
+  updateProcessButtons();
+  if (targetFiles.length) renderTargetList();
+  if (els.statusTitle && els.statusText) {
+    const titleSource = els.statusTitle.dataset.i18nSource || els.statusTitle.textContent;
+    const textSource = els.statusText.dataset.i18nSource || els.statusText.textContent;
+    els.statusTitle.textContent = translateDynamicText(titleSource);
+    els.statusText.textContent = translateDynamicText(textSource);
+  }
+}
+
+
 function invalidatePreviewJudgeLines() {
   latestPreviewJudgeLines = null;
   latestPreviewJudgeLinesKey = "";
+}
+
+if (els.languageSelect) {
+  const choice = storedLanguageChoice();
+  els.languageSelect.value = choice;
+  els.languageSelect.addEventListener("change", () => {
+    setStoredLanguageChoice(els.languageSelect.value);
+    applyLanguage(els.languageSelect.value);
+    renderCurrentPreview();
+  });
 }
 
 window.Module = {
@@ -254,7 +480,7 @@ els.play.addEventListener("click", () => {
 els.previewToggle.addEventListener("click", () => {
   previewVisible = !previewVisible;
   els.previewBody.hidden = !previewVisible;
-  els.previewToggle.textContent = previewVisible ? "Hide preview" : "Show preview";
+  els.previewToggle.textContent = previewVisible ? t("Hide preview") : t("Show preview");
   stopPreviewPlayback(true);
   updateProcessButtons();
   if (previewVisible) renderCurrentPreview();
@@ -297,13 +523,13 @@ function renderTargetList() {
 
     const up = document.createElement("button");
     up.type = "button";
-    up.textContent = "Up";
+    up.textContent = t("Up");
     up.disabled = index === 0;
     up.addEventListener("click", () => moveTarget(index, -1));
 
     const down = document.createElement("button");
     down.type = "button";
-    down.textContent = "Dn";
+    down.textContent = t("Dn");
     down.disabled = index === targetFiles.length - 1;
     down.addEventListener("click", () => moveTarget(index, 1));
 
@@ -420,8 +646,8 @@ function updateProcessButtons() {
   const needsVideoForDecoration = settings.decorationTemplate !== "none";
   const needsVideoForExport = needsVisual || needsVideoForDecoration;
 
-  els.audioButton.textContent = audioStatus === "processing" ? "Stop audio" : "Process audio";
-  els.visualButton.textContent = visualStatus === "processing" ? "Stop visual" : "Process visual";
+  els.audioButton.textContent = audioStatus === "processing" ? t("Stop audio") : t("Process audio");
+  els.visualButton.textContent = visualStatus === "processing" ? t("Stop visual") : t("Process visual");
 
   els.audioButton.disabled =
     (audioStatus !== "processing" && !hasAudioSource) || audioStatus === "done";
@@ -891,7 +1117,6 @@ function generateAudioAnalysis(audioBuffer, settings) {
   const mono = mixToMono(audioBuffer);
   const waveform = buildDisplayWaveform(mono, sampleRate);
   const onset = computeSpectralFluxOnsets(mono, sampleRate, settings);
-  const oldAudioDetections = computeOldAmplitudeDetections(mono, sampleRate, settings);
   const notes = [];
   let prev = { noteType: 1, endI: 0 };
 
@@ -905,7 +1130,6 @@ function generateAudioAnalysis(audioBuffer, settings) {
     notes,
     waveform,
     detections: onset.detections,
-    oldAudioDetections,
     duration: audioBuffer.duration,
     onsetEnvelope: onset.envelope,
   };
@@ -935,64 +1159,6 @@ function buildDisplayWaveform(samples, sampleRate) {
     const end = Math.min(samples.length, start + step);
     for (let j = start; j < end; j++) peak = Math.max(peak, Math.abs(samples[j]));
     data[i] = peak;
-  }
-
-  return data;
-}
-
-function computeOldAmplitudeDetections(samples, sampleRate, settings) {
-  const data = buildOldAmplitudeData(samples, sampleRate);
-  const detections = [];
-  const offset = Math.max(0, Math.round((settings.offset || 0) * P.pixelPerSec));
-  const noteInterval = Math.max(0, Math.round((settings.noteInterval || 0) * P.pixelPerSec));
-  const vDiff = AUDIO_DETECTION.oldVolumeDiff;
-  let maxI = 0;
-  let max = 0;
-  let minI = 0;
-  let min = 0;
-  let prevMaxI = -99999;
-
-  for (let i = offset; i < data.length; i++) {
-    const val = data[i];
-    if (max > vDiff * min && max > vDiff * val && maxI > minI && maxI - prevMaxI > noteInterval) {
-      detections.push({
-        start: maxI / P.pixelPerSec,
-        end: i / P.pixelPerSec,
-        strength: max,
-      });
-      prevMaxI = maxI;
-      maxI = i + 1;
-      minI = i + 1;
-      max = data[i + 1] || 0;
-      min = data[i + 1] || 0;
-    } else if (val > max) {
-      max = val;
-      maxI = i;
-    } else if (val < min) {
-      min = val;
-      minI = i;
-    }
-  }
-
-  return detections;
-}
-
-function buildOldAmplitudeData(samples, sampleRate) {
-  const step = Math.max(1, Math.floor(sampleRate / P.pixelPerSec));
-  const length = Math.floor(samples.length / step);
-  const data = new Float32Array(length);
-
-  for (let i = 0; i < length; i++) {
-    const start = i * step;
-    const end = Math.min(samples.length, start + step);
-    let min = Infinity;
-    let max = -Infinity;
-    for (let j = start; j < end; j++) {
-      const sample = samples[j] || 0;
-      min = Math.min(min, sample);
-      max = Math.max(max, sample);
-    }
-    data[i] = Math.max(0, max - min);
   }
 
   return data;
@@ -1575,14 +1741,11 @@ function buildJudgeLinesForTemplate({ template, notes, audioAnalysis, trackingEv
   }
 
   if (template === "static-four" || template === "audio-dynamic" || template === "audio-dynamic-two") {
-    // IMPORTANT: keep the old C++ pattern generator, but feed it the newer
-    // onset/stop detections that already work well for the single static line.
-    // Fall back to the old amplitude detector only if the new detector is empty.
-    const patternSource = selectOldPatternDetections(audioAnalysis);
-    const pattern = generateOldAudioPattern(patternSource.detections, settings, {
+    const patternDetections = audioAnalysis?.detections || [];
+    const pattern = generateOldAudioPattern(patternDetections, settings, {
       forceHorizontal: template === "audio-dynamic",
     });
-    const debug = summarizeOldAudioPattern(pattern, patternSource.detections, settings, patternSource.source);
+    const debug = summarizeOldAudioPattern(pattern, patternDetections, settings);
     lastStaticFourDebug = debug;
     console.groupCollapsed(`[PhiGen] Four-line pattern debug ${APP_BUILD_ID}`);
     console.table(debug);
@@ -1696,18 +1859,7 @@ function judgeLine({
   };
 }
 
-function selectOldPatternDetections(audioAnalysis) {
-  const newDetections = audioAnalysis?.detections || [];
-  if (newDetections.length) {
-    return { source: "spectral-flux detections", detections: newDetections };
-  }
-  return {
-    source: "old amplitude detections",
-    detections: audioAnalysis?.oldAudioDetections || [],
-  };
-}
-
-function summarizeOldAudioPattern(pattern, detections, settings, source) {
+function summarizeOldAudioPattern(pattern, detections, settings) {
   const holdThresholdSec = Math.max(0, settings.holdTime || 0);
   const durations = detections.map((d) => Math.max(0, (d.end || 0) - (d.start || 0)));
   const longDetections = durations.filter((duration) => duration > holdThresholdSec).length;
@@ -1718,7 +1870,7 @@ function summarizeOldAudioPattern(pattern, detections, settings, source) {
 
   return {
     build: APP_BUILD_ID,
-    source,
+    source: "spectral-flux detections",
     detections: detections.length,
     longDetections,
     shortDetections: Math.max(0, detections.length - longDetections),
@@ -2906,7 +3058,7 @@ function drawPreVisualPlaceholder(message) {
   ctx.font = "20px system-ui, -apple-system, BlinkMacSystemFont, Segoe UI, sans-serif";
   ctx.textAlign = "center";
   ctx.textBaseline = "middle";
-  ctx.fillText(message, canvas.width / 2, canvas.height / 2);
+  ctx.fillText(translateDynamicText(message), canvas.width / 2, canvas.height / 2);
 }
 
 function drawPixelConversionPreview(ev, judgeLines = null, currentTime = ev.time || 0) {
@@ -3001,7 +3153,7 @@ function startPreviewPlayback() {
   if (!previewEvents.length && !latestAudioAnalysis?.duration) return;
   previewDragging = false;
   previewPlaying = true;
-  els.play.textContent = "Pause";
+  els.play.textContent = t("Pause");
 
   if (previewEvents.length) {
     let index = sliderIndex();
@@ -3051,7 +3203,7 @@ function stopPreviewPlayback(stopAudio) {
   previewPlaying = false;
   cancelAnimationFrame(previewRaf);
   previewRaf = 0;
-  els.play.textContent = "Play";
+  els.play.textContent = t("Play");
   if (stopAudio) stopPreviewAudio();
 }
 
@@ -3465,8 +3617,10 @@ function frameToChart(x, y, width, height) {
 }
 
 function setStatus(title, text) {
-  els.statusTitle.textContent = title;
-  els.statusText.textContent = text;
+  els.statusTitle.dataset.i18nSource = title;
+  els.statusText.dataset.i18nSource = text;
+  els.statusTitle.textContent = translateDynamicText(title);
+  els.statusText.textContent = translateDynamicText(text);
 }
 
 function updateProgress(value) {
@@ -3530,6 +3684,7 @@ window.addEventListener("resize", () => {
   renderCurrentPreview();
 });
 
+applyLanguage(storedLanguageChoice());
 drawPreview({ x: 0, y: 0, rotation: 0, detected: false }, [], null, { showLine: false, currentTime: 0 });
 updateInputPanels();
 updateSettingsVisibility();

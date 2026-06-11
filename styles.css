@@ -28,7 +28,8 @@ body {
 }
 
 button,
-input {
+input,
+select {
   font: inherit;
 }
 
@@ -66,11 +67,28 @@ h2 {
 
 .file-picker,
 .checkbox-row,
-.field-grid label {
+.field-grid label,
+.language-row {
   display: grid;
   gap: 7px;
   color: var(--muted);
   font-size: 13px;
+}
+
+
+.language-row {
+  grid-template-columns: 82px minmax(0, 1fr);
+  align-items: center;
+  margin: 0 0 12px;
+  padding: 10px 12px;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  background: var(--panel-2);
+  color: var(--text);
+}
+
+.language-row span {
+  color: var(--muted);
 }
 
 .file-picker {
@@ -81,7 +99,8 @@ h2 {
   background: var(--panel-2);
 }
 
-input {
+input,
+select {
   width: 100%;
   min-width: 0;
   border: 1px solid var(--line);
